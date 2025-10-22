@@ -1,5 +1,5 @@
 import React from "react";
-import aboutImg from "../assets/logos/logo.svg";
+import aboutImg from "../assets/logos/image.jpg";
 
 export default function About() {
   return (
