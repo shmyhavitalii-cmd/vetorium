@@ -2,13 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom */
+/* Animated neon gradient background */
 body {
-  background: linear-gradient(180deg, #01010a 0%, #000 100%);
-  font-family: Inter, Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: radial-gradient(circle at 20% 30%, #020024, #000000 70%);
+  color: white;
+  font-family: "Poppins", "Orbitron", sans-serif;
+  overflow-x: hidden;
 }
 
-/* small glow helper */
-.glow {
-  text-shadow: 0 0 18px rgba(0,212,255,0.18), 0 0 30px rgba(139,92,246,0.06);
+/* Neon glow helpers */
+.glow-text {
+  text-shadow: 0 0 10px #00d4ff, 0 0 20px #8b5cf6;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
 }

@@ -1,32 +1,55 @@
 import React from "react";
-import logo1 from "../assets/logos/photo_2025-10-21_03-21-56.jpg";
-import { WHITEPAPER_URL } from "../config/constants";
+import { motion } from "framer-motion";
+import { fadeIn } from "../animations/fadeIn";
+import logoMain from "../assets/logos/Vectorium logo (3).svg";
 
 export default function Header() {
   return (
-    <header className="min-h-screen flex flex-col items-center justify-center text-center relative overflow-hidden">
-      <div className="absolute inset-0 -z-10 bg-black/60" />
-      <div className="max-w-5xl">
-        <img src={logo1} alt="Vectorium coin" className="w-48 mx-auto mb-6 rounded-full shadow-2xl" />
-        <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-neonCyan to-neonViolet glow">
-          VECT • AI
-        </h1>
-        <p className="mt-4 text-xl text-gray-300 max-w-2xl mx-auto">
-          Empowering the Next Era of Intelligent Assets — Built by Vectorium.
-        </p>
-
-        <div className="mt-8 flex justify-center gap-4">
-          <a href="#buy" className="px-6 py-3 rounded-xl bg-neonCyan text-black font-semibold shadow hover:scale-105 transition">
-            Buy Tokens
-          </a>
-          <a href={WHITEPAPER_URL} className="px-6 py-3 rounded-xl border border-gray-600 hover:bg-gray-700 transition">
-            Read Whitepaper
-          </a>
-          <a href="#community" className="px-6 py-3 rounded-xl border border-transparent hover:border-gray-600 transition">
-            Join Community
-          </a>
-        </div>
-      </div>
+    <header className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-b from-[#030018] via-[#060031] to-black animate-gradient" />
+      <motion.img
+        src={logoMain}
+        alt="VECT AI Logo"
+        className="w-64 md:w-80 mb-8 drop-shadow-xl"
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView="show"
+      />
+      <motion.h1
+        variants={fadeIn("up", 0.3)}
+        initial="hidden"
+        whileInView="show"
+        className="text-5xl md:text-6xl font-extrabold glow-text bg-gradient-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent"
+      >
+        Empowering the Next Era of Intelligent Assets
+      </motion.h1>
+      <motion.p
+        variants={fadeIn("up", 0.5)}
+        initial="hidden"
+        whileInView="show"
+        className="mt-4 text-lg text-gray-300"
+      >
+        Built by Vectorium • Decentralized AI Protocol for Real-World Data
+      </motion.p>
+      <motion.div
+        variants={fadeIn("up", 0.6)}
+        initial="hidden"
+        whileInView="show"
+        className="mt-10 flex gap-4"
+      >
+        <a
+          href="#buy"
+          className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-violet-500 text-black font-semibold hover:scale-105 transition"
+        >
+          Buy Tokens
+        </a>
+        <a
+          href="#whitepaper"
+          className="px-6 py-3 rounded-xl border border-cyan-400 hover:bg-cyan-400/10 transition"
+        >
+          Read Whitepaper
+        </a>
+      </motion.div>
     </header>
   );
 }
