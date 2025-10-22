@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { fadeIn } from "../animations/fadeIn";
 
 export default function BuyWidget() {
   const [connected, setConnected] = useState(false);
@@ -6,49 +8,43 @@ export default function BuyWidget() {
   const [provider, setProvider] = useState(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      if (window.ethereum && window.ethereum.selectedAddress) {
-        setConnected(true);
-        setAccount(window.ethereum.selectedAddress);
-        setProvider("metamask");
-      }
-      if (window.solana && window.solana.isPhantom && window.solana.isConnected) {
-        setConnected(true);
-        setAccount(window.solana.publicKey?.toString());
-        setProvider("phantom");
-      }
+    // Detect if already connected
+    if (window.ethereum?.selectedAddress) {
+      setConnected(true);
+      setAccount(window.ethereum.selectedAddress);
+      setProvider("metamask");
+    }
+    if (window.solana?.isPhantom && window.solana.isConnected) {
+      setConnected(true);
+      setAccount(window.solana.publicKey?.toString());
+      setProvider("phantom");
     }
   }, []);
 
   const connectMetaMask = async () => {
-    if (!window.ethereum) {
-      alert("No MetaMask detected. Please install MetaMask.");
-      return;
-    }
+    if (!window.ethereum) return alert("Please install MetaMask.");
     try {
-      const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-      setAccount(accounts[0]);
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
       setConnected(true);
+      setAccount(accounts[0]);
       setProvider("metamask");
     } catch (err) {
       console.error(err);
-      alert("MetaMask connection canceled or failed.");
     }
   };
 
   const connectPhantom = async () => {
-    if (!window.solana || !window.solana.isPhantom) {
-      alert("Please install Phantom wallet to connect (Solana).");
-      return;
-    }
+    if (!window.solana || !window.solana.isPhantom)
+      return alert("Please install Phantom wallet.");
     try {
       const resp = await window.solana.connect();
-      setAccount(resp.publicKey.toString());
       setConnected(true);
+      setAccount(resp.publicKey.toString());
       setProvider("phantom");
     } catch (err) {
       console.error(err);
-      alert("Phantom connection canceled or failed.");
     }
   };
 
@@ -61,67 +57,157 @@ export default function BuyWidget() {
     setProvider(null);
   };
 
-  // NOTE: Full buy integration (PancakeSwap / Jupiter) should be embedded via their widgets or SDKs.
-  // Here we provide a simple UX and a link to an external swap (placeholder).
   return (
-    <section id="buy" className="py-16">
-      <h3 className="text-2xl font-semibold">How to Buy</h3>
-      <div className="mt-6 grid md:grid-cols-2 gap-6 items-start">
-        <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
-          <h4 className="font-semibold">Connect</h4>
-          <p className="text-gray-300 mt-2">Connect MetaMask (EVM) or Phantom (Solana). WalletConnect coming soon.</p>
+    <section id="buy" className="py-24 max-w-6xl mx-auto px-6">
+      {/* Section Title */}
+      <motion.h2
+        variants={fadeIn("up", 0)}
+        initial="hidden"
+        whileInView="show"
+        className="text-3xl font-bold mb-10 text-center"
+      >
+        How to Buy
+      </motion.h2>
 
-          <div className="mt-4 flex flex-wrap gap-3">
-            {!connected ? (
-              <>
-                <button onClick={connectMetaMask} className="px-4 py-2 rounded-lg bg-neonCyan text-black">Connect MetaMask</button>
-                <button onClick={connectPhantom} className="px-4 py-2 rounded-lg border">Connect Phantom</button>
-                <button onClick={() => alert('WalletConnect placeholder - add web3modal for real support.')} className="px-4 py-2 rounded-lg border">WalletConnect</button>
-              </>
-            ) : (
-              <>
-                <div className="px-4 py-2 rounded-lg bg-gray-800">Connected: <span className="font-mono">{account?.slice(0,6)}...{account?.slice(-6)}</span></div>
-                <button onClick={disconnect} className="px-4 py-2 rounded-lg border">Disconnect</button>
-              </>
-            )}
-          </div>
+      <motion.div
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView="show"
+        className="grid md:grid-cols-2 gap-8"
+      >
+        {/* LEFT CARD - Connect + Steps */}
+        <div className="glass-card p-6 flex flex-col justify-between">
+          <div>
+            <h3 className="text-xl font-semibold mb-3 text-cyan-400">Connect</h3>
+            <p className="text-gray-300 mb-4">
+              Connect MetaMask (EVM) or Phantom (Solana). WalletConnect coming
+              soon.
+            </p>
 
-          <div className="mt-6">
-            <h5 className="font-semibold">Steps</h5>
-            <ol className="list-decimal ml-5 mt-2 text-gray-300 space-y-1">
+            {/* Wallet Connect Buttons */}
+            <div className="flex flex-wrap gap-3 mb-6">
+              {!connected ? (
+                <>
+                  <button
+                    onClick={connectMetaMask}
+                    className="flex-1 min-w-[140px] bg-gradient-to-r from-cyan-400 to-violet-500 text-black font-semibold px-4 py-2 rounded-lg hover:scale-105 transition"
+                  >
+                    Connect MetaMask
+                  </button>
+                  <button
+                    onClick={connectPhantom}
+                    className="flex-1 min-w-[140px] border border-cyan-400 px-4 py-2 rounded-lg hover:bg-cyan-400/10 transition"
+                  >
+                    Connect Phantom
+                  </button>
+                  <button
+                    onClick={() =>
+                      alert("WalletConnect integration coming soon.")
+                    }
+                    className="flex-1 min-w-[140px] border border-cyan-400 px-4 py-2 rounded-lg hover:bg-cyan-400/10 transition"
+                  >
+                    WalletConnect
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div className="flex-1 text-sm bg-gray-900 rounded-lg px-4 py-2 truncate">
+                    Connected: {account?.slice(0, 6)}...{account?.slice(-6)}
+                  </div>
+                  <button
+                    onClick={disconnect}
+                    className="border border-cyan-400 px-4 py-2 rounded-lg hover:bg-cyan-400/10 transition"
+                  >
+                    Disconnect
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Steps List */}
+            <h4 className="font-semibold mb-2 text-cyan-400">Steps</h4>
+            <ol className="list-decimal ml-5 text-gray-300 text-sm space-y-1">
               <li>Connect your wallet (MetaMask, Phantom, or WalletConnect).</li>
               <li>Select token pair (USDT → VECT.AI) in the swap UI.</li>
               <li>Set slippage to 3–5% and confirm the swap.</li>
-              <li>Claim vested tokens via Streamflow.finance (if applicable).</li>
+              <li>
+                Claim vested tokens via{" "}
+                <a
+                  href="https://streamflow.finance/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-cyan-400 underline"
+                >
+                  Streamflow.finance
+                </a>
+              </li>
             </ol>
-            <div className="mt-4">
-              <a href="https://pancakeswap.finance" target="_blank" rel="noreferrer" className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600">Open PancakeSwap (EVM)</a>
-              <a href="https://jup.ag" target="_blank" rel="noreferrer" className="ml-3 px-4 py-2 rounded-md border hover:bg-gray-800">Open Jupiter (Solana)</a>
-            </div>
+          </div>
+
+          {/* Divider */}
+          <hr className="my-6 border-gray-700/50" />
+
+          {/* Swap platform buttons (aligned + responsive) */}
+          <div className="mt-6 flex flex-col gap-4">
+            <a
+              href="https://pancakeswap.finance"
+              target="_blank"
+              rel="noreferrer"
+              className="w-full text-center px-6 py-3 rounded-lg font-semibold 
+                        bg-gradient-to-r from-yellow-400 to-yellow-500 text-black 
+                        hover:scale-105 transition whitespace-nowrap shadow-md"
+            >
+              🥞 Open PancakeSwap (EVM)
+            </a>
+
+            <a
+              href="https://jup.ag"
+              target="_blank"
+              rel="noreferrer"
+              className="w-full text-center px-6 py-3 rounded-lg font-semibold 
+                        border border-cyan-400 text-cyan-300 hover:bg-cyan-400/10 
+                        transition whitespace-nowrap shadow-md"
+            >
+              💠 Open Jupiter (Solana)
+            </a>
           </div>
         </div>
 
-        <div className="rounded-xl p-6 border border-gray-800">
-          <h4 className="font-semibold">Quick Swap Preview</h4>
-          <p className="mt-3 text-gray-300">This is a placeholder preview. Integrate the actual swap widget (PancakeSwap iframe or Jupiter) here for direct on-page swaps.</p>
-          <div className="mt-6 p-4 rounded bg-gray-900">
-            <div className="flex justify-between">
-              <div>
-                <div className="text-sm text-gray-400">From</div>
-                <div className="font-medium">USDT</div>
+        {/* RIGHT CARD - Quick Swap Preview */}
+        <div className="glass-card p-6 flex flex-col justify-between">
+          <div>
+            <h3 className="text-xl font-semibold mb-3 text-cyan-400">
+              Quick Swap Preview
+            </h3>
+            <p className="text-gray-300 mb-6">
+              This is a placeholder preview. Integrate the actual swap widget
+              (PancakeSwap iframe or Jupiter) here for direct on-page swaps.
+            </p>
+
+            <div className="rounded-lg bg-gray-900 p-4 text-gray-200">
+              <div className="flex justify-between mb-2">
+                <div>
+                  <div className="text-sm text-gray-400">From</div>
+                  <div className="font-semibold">USDT</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm text-gray-400">To</div>
+                  <div className="font-semibold">VECT.AI</div>
+                </div>
               </div>
-              <div className="text-right">
-                <div className="text-sm text-gray-400">To</div>
-                <div className="font-medium">VECT.AI</div>
-              </div>
-            </div>
-            <div className="mt-4 text-sm text-gray-400">Slippage: <strong>3%</strong></div>
-            <div className="mt-4">
-              <button disabled={!connected} className="px-4 py-2 rounded-md bg-neonCyan text-black disabled:opacity-40">Proceed to Swap</button>
+              <div className="text-sm text-gray-400">Slippage: 3%</div>
+              <button
+                disabled={!connected}
+                className="w-full mt-4 px-4 py-2 rounded-md 
+                           bg-gradient-to-r from-cyan-400 to-violet-500 text-black 
+                           font-semibold hover:scale-105 transition disabled:opacity-40"
+              >
+                Proceed to Swap
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
