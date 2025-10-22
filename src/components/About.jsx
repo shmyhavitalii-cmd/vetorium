@@ -1,46 +1,52 @@
 import React from "react";
-import { motion } from "framer-motion";
-import { fadeIn } from "../animations/fadeIn";
-import logoVectorium from "../assets/logos/Vectorium logo (1).svg";
-import logoDept from "../assets/logos/Vectorium logo (5).svg";
+import aboutImg from "../assets/logos/logo.svg";
 
 export default function About() {
   return (
-    <section id="about" className="py-24 max-w-6xl mx-auto px-6">
-      <motion.h2
-        variants={fadeIn("up", 0)}
-        initial="hidden"
-        whileInView="show"
-        className="text-3xl font-bold mb-8"
-      >
-        About VECT • AI
-      </motion.h2>
-      <motion.div
-        variants={fadeIn("up", 0.2)}
-        initial="hidden"
-        whileInView="show"
-        className="grid md:grid-cols-2 gap-12 items-center"
-      >
-        <div>
-          <p className="text-gray-300 mb-6 leading-relaxed">
-            VECT • AI is the evolution of Vectorium’s ecosystem — a decentralized
-            intelligence protocol integrating blockchain, AI, and tokenized data
-            streams. It powers IntelliJAM and IntelliGEM systems, forming the
-            backbone of the Vectorium Innovation Network.
-          </p>
-          <div className="flex gap-6 mt-6 opacity-90">
-            <img src={logoVectorium} alt="Vectorium Holding" className="h-10" />
-            <img src={logoDept} alt="VECT AI Department" className="h-10" />
+    <section id="about" className="py-24 bg-black text-gray-100 border-t border-[#222]">
+      <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
+        
+        {/* LEFT IMAGE */}
+        <div className="flex justify-center">
+          <div className="bg-[#111] p-6 rounded-2xl border border-[#333] shadow-lg hover:shadow-[#d4af3720] transition-all duration-300">
+            <img
+              src={aboutImg}
+              alt="About VECT.AI"
+              className="w-48 mx-auto opacity-90"
+            />
           </div>
         </div>
-        <div className="glass-card p-6 rounded-xl">
-          <h4 className="text-xl font-semibold mb-3 text-cyan-400">Mission</h4>
-          <p className="text-gray-300">
-            To merge human creativity and machine intelligence into a single,
-            trustable, tokenized infrastructure.
+
+        {/* RIGHT CONTENT */}
+        <div>
+          <h2 className="text-3xl font-semibold mb-6 text-[#D4AF37]">
+            About VECT • AI
+          </h2>
+          <p className="text-gray-300 mb-5 leading-relaxed">
+            <strong className="text-[#D4AF37]">VECT • AI</strong> is the evolution of the 
+            <strong className="text-white"> Vectorium ecosystem</strong> — a decentralized 
+            intelligence protocol integrating blockchain, AI, and tokenized data streams.
           </p>
+          <p className="text-gray-400 mb-6 leading-relaxed">
+            It powers the <strong className="text-[#D4AF37]">IntelliJAM</strong> and 
+            <strong className="text-[#D4AF37]"> IntelliGEM</strong> systems, forming the backbone of the 
+            <strong className="text-white"> Vectorium Innovation Network</strong>. This synergy brings 
+            intelligence, transparency, and sustainability into digital asset management.
+          </p>
+
+          <div className="flex gap-4 flex-wrap mt-4">
+            <div className="bg-[#111] border border-[#333] rounded-lg px-5 py-2 text-[#D4AF37] font-semibold">
+              Vectorium Holding
+            </div>
+            <div className="bg-[#111] border border-[#333] rounded-lg px-5 py-2 text-[#D4AF37] font-semibold">
+              BenediXit OÜ
+            </div>
+            <div className="bg-[#111] border border-[#333] rounded-lg px-5 py-2 text-[#D4AF37] font-semibold">
+              VECT • AI Department
+            </div>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

@@ -1,55 +1,65 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { fadeIn } from "../animations/fadeIn";
-import logoMain from "../assets/logos/Vectorium logo (3).svg";
+import React, { useState } from "react";
+import logo from "../assets/logos/logo.svg";
 
 export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <header className="relative h-screen flex flex-col justify-center items-center text-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030018] via-[#060031] to-black animate-gradient" />
-      <motion.img
-        src={logoMain}
-        alt="VECT AI Logo"
-        className="w-64 md:w-80 mb-8 drop-shadow-xl"
-        variants={fadeIn("up", 0.2)}
-        initial="hidden"
-        whileInView="show"
-      />
-      <motion.h1
-        variants={fadeIn("up", 0.3)}
-        initial="hidden"
-        whileInView="show"
-        className="text-5xl md:text-6xl font-extrabold glow-text bg-gradient-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent"
-      >
-        Empowering the Next Era of Intelligent Assets
-      </motion.h1>
-      <motion.p
-        variants={fadeIn("up", 0.5)}
-        initial="hidden"
-        whileInView="show"
-        className="mt-4 text-lg text-gray-300"
-      >
-        Built by Vectorium • Decentralized AI Protocol for Real-World Data
-      </motion.p>
-      <motion.div
-        variants={fadeIn("up", 0.6)}
-        initial="hidden"
-        whileInView="show"
-        className="mt-10 flex gap-4"
-      >
-        <a
-          href="#buy"
-          className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-violet-500 text-black font-semibold hover:scale-105 transition"
+    <header className="fixed top-0 left-0 w-full z-50 bg-black/95 backdrop-blur-md border-b border-[#222] shadow-md">
+      <nav className="max-w-7xl mx-auto px-6 py-2 flex justify-between items-center">
+        {/* LOGO + BRAND */}
+        <div className="flex items-center gap-3">
+          <img
+            src={logo}
+            alt="Vectorium"
+            className="h-14 w-auto transition-transform duration-300 hover:scale-105"
+          />
+          
+        </div>
+
+        {/* DESKTOP MENU */}
+        <div className="hidden md:flex items-center gap-7 text-[15px] font-medium text-gray-200">
+          <a href="#about" className="hover:text-[#D4AF37]">About</a>
+          <a href="#vision" className="hover:text-[#D4AF37]">Vision</a>
+          <a href="#team" className="hover:text-[#D4AF37]">Team</a>
+          <a href="#docs" className="hover:text-[#D4AF37]">Documents</a>
+          <a
+            href="#buy"
+            className="px-5 py-1.5 rounded-md bg-[#D4AF37] text-black font-semibold hover:bg-[#E6C76E]"
+          >
+            Buy Tokens
+          </a>
+        </div>
+
+        {/* MOBILE MENU BUTTON */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="md:hidden flex flex-col justify-center gap-1"
         >
-          Buy Tokens
-        </a>
-        <a
-          href="#whitepaper"
-          className="px-6 py-3 rounded-xl border border-cyan-400 hover:bg-cyan-400/10 transition"
-        >
-          Read Whitepaper
-        </a>
-      </motion.div>
+          <span className="w-6 h-[2px] bg-[#D4AF37]"></span>
+          <span className="w-6 h-[2px] bg-[#D4AF37]"></span>
+          <span className="w-6 h-[2px] bg-[#D4AF37]"></span>
+        </button>
+      </nav>
+
+      {/* MOBILE MENU */}
+      {menuOpen && (
+        <div className="md:hidden bg-black text-gray-200 border-t border-[#222] shadow-lg">
+          <div className="flex flex-col items-center py-4 space-y-3 text-base font-medium">
+            <a href="#about" onClick={() => setMenuOpen(false)} className="hover:text-[#D4AF37]">About</a>
+            <a href="#vision" onClick={() => setMenuOpen(false)} className="hover:text-[#D4AF37]">Vision</a>
+            <a href="#team" onClick={() => setMenuOpen(false)} className="hover:text-[#D4AF37]">Team</a>
+            <a href="#docs" onClick={() => setMenuOpen(false)} className="hover:text-[#D4AF37]">Documents</a>
+            <a
+              href="#buy"
+              onClick={() => setMenuOpen(false)}
+              className="mt-2 px-6 py-2 rounded-md bg-[#D4AF37] text-black font-semibold hover:bg-[#E6C76E]"
+            >
+              Buy Tokens
+            </a>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

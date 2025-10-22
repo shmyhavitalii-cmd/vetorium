@@ -36,3 +36,7 @@
     transform: rotate(360deg);
   }
 }
+body {
+   background: radial-gradient(circle at top, #111 0%, #000 80%);
+  color: #EDEDED;
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "./components/Header";
+import Hero from "./components/Hero";
 import About from "./components/About";
 import Vision from "./components/Vision";
 import Tokenomics from "./components/Tokenomics";
@@ -18,6 +19,7 @@ export default function App() {
         <Vision />
         <Tokenomics />
         <Documents />
+         <Hero />
         <BuyWidget />
         <Roadmap />
         <Team />
